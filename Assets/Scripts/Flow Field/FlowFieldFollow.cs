@@ -32,15 +32,16 @@ public class FlowFieldFollow : MonoBehaviour
         {
             //Debug.Log(grid.Grid[0].name);
             moveDirection = direction.normalized;
-            body.velocity = moveDirection * _speed * Time.deltaTime + body.velocity;
+            body.velocity = moveDirection * _speed + Physics.gravity * 0.4f;
         }
     }
 
     private void FixedUpdate()
     {
         //transform.position += moveDirection * Time.fixedDeltaTime * 5f;
-        if (direction == Vector3.zero)
+        if (Vector3.Distance(target.position, transform.position) < 3f)
         {
+            SpawnerFlowFieldTest.Instance.DespawnedUnit();
             Destroy(gameObject);
         }
     }

@@ -68,7 +68,7 @@ namespace FlowFields
                             {
                                 if (b > 3)
                                 {
-                                    curCell.IncreaseCost(Mathf.FloorToInt(short.MaxValue * 0.5f));
+                                    curCell.IncreaseCost(Mathf.FloorToInt(short.MaxValue * 0.75f));
                                     break;
                                 }
 

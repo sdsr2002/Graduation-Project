@@ -1,47 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FlowFields;
 
-namespace FlowFields
+public class SpawnerFlowFieldTest : MonoBehaviour
 {
-    public class SpawnerFlowFieldTest : MonoBehaviour
+    public static SpawnerFlowFieldTest Instance;
+
+    [SerializeField]
+    private bool _spawnerOn;
+    [SerializeField]
+    private GameObject _unitToSpawn;
+    [SerializeField]
+    private GameObject[] _spawnPoints;
+
+    [SerializeField]
+    private int _spawnedUnits;
+
+    [SerializeField, Range(0.0001f,10f)]
+    private float _spawnTimer = 0.1f;
+
+    private float _timer;
+
+    private void Awake()
     {
-        [SerializeField]
-        private bool _spawnerOn;
-        [SerializeField]
-        private GameObject _unitToSpawn;
-        [SerializeField]
-        private GameObject[] _spawnPoints;
+        Instance = this;
+    }
 
-        [SerializeField, Range(0.0001f,10f)]
-        private float _spawnTimer = 0.1f;
+    private void Update()
+    {
+        if (_spawnerOn && _unitToSpawn != null)
+            Tick();
+    }
 
-        private float _timer;
-
-
-        private void Update()
+    private void Tick()
+    {
+        if (_timer <= 0)
         {
-            if (_spawnerOn && _unitToSpawn != null)
-                Tick();
+            SpawnUnit();
+            _timer = _spawnTimer;
+            return;
         }
 
-        private void Tick()
-        {
-            if (_timer <= 0)
-            {
-                SpawnUnit();
-                _timer = _spawnTimer;
-                return;
-            }
+        _timer -= Time.deltaTime;
+        return;
+    } 
 
-            _timer -= Time.deltaTime;
-            return;
-        } 
+    public void DespawnedUnit()
+    {
+        _spawnedUnits--;
+    }
 
-        private void SpawnUnit()
+    private void SpawnUnit()
+    {
+        if (_spawnPoints != null && _spawnPoints.Length != 0)
         {
-            if (_spawnPoints != null && _spawnPoints.Length != 0)
-                Instantiate(_unitToSpawn, _spawnPoints[Random.Range(0,_spawnPoints.Length)].transform.position,Quaternion.identity);
+            Instantiate(_unitToSpawn, _spawnPoints[Random.Range(0,_spawnPoints.Length)].transform.position,Quaternion.identity);
+            _spawnedUnits++;
         }
     }
 }

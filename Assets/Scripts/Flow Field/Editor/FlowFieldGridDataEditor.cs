@@ -51,24 +51,16 @@ namespace FlowFields
             }
             flowFieldGridData.DataLocked = true;
             flowFieldGridData._generatedDataInside = false;
-            // Get Diameters from "GridController"
+
+            // Get Parameters from "GridController"
             flowFieldGridData.Offset = new Vector3(gridController.transform.position.x, gridController.transform.position.y, gridController.transform.position.z);
             flowFieldGridData.GridSize = new Vector3Int(gridController.GridSize.x, gridController.GridSize.y, gridController.GridSize.z);
             flowFieldGridData.cellDiameter = gridController.CellRadius * 2f;
             flowFieldGridData.cellRadius = gridController.CellRadius;
+
             // Generate FlowField Grid
             flowFieldGridData.Grid = new FlowFieldData[gridController.GridSize.x * gridController.GridSize.y * gridController.GridSize.z];
-            //for (int y = 0; y < gridController.GridSize.y; y++)
-            //{
-            //    for (int z = 0; z < gridController.GridSize.z; z++)
-            //    {
-            //        for (int x = 0; x < gridController.GridSize.x; x++)
-            //        {
-            //            flowFieldGridData.Grid[GetGridIndex(x,y,z)] = new FlowFieldData();
-            //        }
-            //    }
-            //}
-
+            
             // Generate All the FlowFields
             for (int y = 0; y < gridController.GridSize.y; y++)
             {
@@ -79,7 +71,6 @@ namespace FlowFields
                 {
                     for (int x = 0; x < gridController.GridSize.x; x++)
                     {
-                        await Task.Delay(flowFieldGridData.waitSpeed);
                         // Create new Grid
                         FlowField field = new FlowField(flowFieldGridData.GridSize, flowFieldGridData.cellRadius, flowFieldGridData.Offset);
                         field.CreateGrid();
